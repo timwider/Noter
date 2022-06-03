@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/admin/AndroidStudioProjects/Noter2/app/src/main/res/drawable/bottom_sheet_corners.xml" value="0.115" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/Noter2/app/src/main/res/drawable/circle.xml" value="0.1215" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/Noter2/app/src/main/res/drawable/circle_shape.xml" value="0.1215" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/Noter2/app/src/main/res/drawable/color_state.xml" value="0.105" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/Noter2/app/src/main/res/drawable/ic_add_photo_gallery.xml" value="0.1605" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/Noter2/app/src/main/res/drawable/ic_baseline_circle_24.xml" value="0.1215" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/Noter2/app/src/main/res/drawable/ic_bold.xml" value="0.1095" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/Noter2/app/src/main/res/drawable/ic_checkbox.xml" value="0.1605" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/Noter2/app/src/main/res/drawable/ic_delete_grey.xml" value="0.1165" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/Noter2/app/src/main/res/drawable/ic_folder.xml" value="0.105" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/Noter2/app/src/main/res/drawable/ic_italic.xml" value="0.1095" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/Noter2/app/src/main/res/drawable/ic_notes.xml" value="0.105" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/Noter2/app/src/main/res/drawable/ic_record_voice.xml" value="0.1605" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/Noter2/app/src/main/res/drawable/ic_share_grey.xml" value="0.1165" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/Noter2/app/src/main/res/drawable/ic_strikethrough.xml" value="0.1095" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/Noter2/app/src/main/res/drawable/ic_underlined.xml" value="0.1095" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/Noter2/app/src/main/res/layout/activity_main.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/Noter2/app/src/main/res/layout/add_folder_dialog_layout.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/Noter2/app/src/main/res/layout/create_folder_fragment.xml" value="0.25" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/Noter2/app/src/main/res/layout/folder_notes_fragment.xml" value="0.2" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/Noter2/app/src/main/res/layout/folder_rv_item.xml" value="0.33" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/Noter2/app/src/main/res/layout/folders_fragment.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/Noter2/app/src/main/res/layout/holder_fragment.xml" value="0.18" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/Noter2/app/src/main/res/layout/home_fragment.xml" value="0.22" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/Noter2/app/src/main/res/layout/note_fragment.xml" value="0.22" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/Noter2/app/src/main/res/layout/note_menu_card.xml" value="0.22" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/Noter2/app/src/main/res/layout/note_rv_item.xml" value="0.25" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/Noter2/app/src/main/res/menu/folder_notes_menu.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/Noter2/app/src/main/res/menu/home_menu.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/admin/AndroidStudioProjects/Noter2/app/src/main/res/menu/menu.xml" value="0.22" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardUseCompatPadding="true"
+    android:padding="5dp"
+    app:cardCornerRadius="10dp"
+    android:layout_height="wrap_content"
+    android:id="@+id/note_card">
+
+    <LinearLayout
+        android:id="@+id/note_card_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_weight="10"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_note_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Here's my note"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="16dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="15dp"/>
+
+            <TextView
+                android:id="@+id/tv_date_created"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="17 апреля"
+                android:textSize="12dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginBottom="15dp"/>
+        </LinearLayout>
+
+<!--        <ImageView-->
+<!--            android:layout_width="0dp"-->
+<!--            android:src="@drawable/ic_baseline_circle_24"-->
+<!--            android:layout_weight="1"-->
+<!--            android:layout_marginEnd="20dp"-->
+<!--            android:layout_height="match_parent"/>-->
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

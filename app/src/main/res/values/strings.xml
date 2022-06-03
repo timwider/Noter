@@ -1,0 +1,46 @@
+<resources>
+    <string name="app_name">Noter</string>
+
+    <string name="january">января</string>
+    <string name="february">февраля</string>
+    <string name="march">марта</string>
+    <string name="april">апреля</string>
+    <string name="may">мая</string>
+    <string name="june">июня</string>
+    <string name="july">июля</string>
+    <string name="august">августа</string>
+    <string name="september">сентября</string>
+    <string name="october">октября</string>
+    <string name="november">ноября</string>
+    <string name="december">декабря</string>
+
+    <string name="delete_note_title">Удалить заметку</string>
+    <string name="delete_note_description">Вы уверены, что хотите удалить заметку? Восстановить её будет невозожно.</string>
+    <string name="delete_note_positive_button">Да</string>
+    <string name="delete_note_negative_button">Отменить</string>
+
+    <string name="action_add_folder">Добавить папку</string>
+
+    <string name="folder_name_et_hint">Название папки</string>
+
+    <string name="create_folder_title">Создать папку</string>
+
+    <string name="create_folder_positive_button">Создать</string>
+    <string name="create_folder_negative_button">Отменить</string>
+
+    <string name="create_folder_textview">Создать папку</string>
+    <string name="et_create_folder_hint">Название папки</string>
+    <string name="btn_create_folder_text">Создать</string>
+    <string name="btn_cancel_text">Отменить</string>
+    <string name="no_folder_name_message">Введите название папки</string>
+    <string name="folder_name_taken_message">Папка с таким названием уже существует</string>
+    <string name="no_notes">Нет заметок.</string>
+    <string name="no_folders">Нет папок.</string>
+    <string name="fab_content_description">Добавить заметку</string>
+
+    <string name="notes">Заметки</string>
+    <string name="folders">Папки</string>
+    <string name="delete_folder_menu_item">Удалить папку</string>
+    <string name="delete_folder_title">Удалить папку</string>
+    <string name="delete_folder_description">Вы уверены, что хотите удалить папку? Все заметки внутри неё также будут удалены.</string>
+</resources>
