@@ -19,4 +19,5 @@ interface NotesRepository {
 
     suspend fun deleteFolderNotes(folderName: String)
 
+    suspend fun deleteNotesById(ids: List<Int>)
 }

@@ -42,5 +42,7 @@
     <string name="folders">Папки</string>
     <string name="delete_folder_menu_item">Удалить папку</string>
     <string name="delete_folder_title">Удалить папку</string>
+    <string name="delete_selected_notes">Удалить выбранные заметки</string>
+    <string name="delete_selected_notes_description">Вы уверены, что хотите удалить выбранные заметки? Восстановить их будет невозможно.</string>
     <string name="delete_folder_description">Вы уверены, что хотите удалить папку? Все заметки внутри неё также будут удалены.</string>
 </resources>

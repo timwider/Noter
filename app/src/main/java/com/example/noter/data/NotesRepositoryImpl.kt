@@ -42,6 +42,10 @@ class NotesRepositoryImpl(
         notesDao.deleteFolderNotes(folderName = folderName)
     }
 
+    override suspend fun deleteNotesById(ids: List<Int>) {
+        notesDao.deleteNotesById(ids = ids)
+    }
+
     private fun mapListToDomain(notes: List<com.example.noter.data.storage.Note>): List<Note> {
 
         val newList = mutableListOf<Note>()

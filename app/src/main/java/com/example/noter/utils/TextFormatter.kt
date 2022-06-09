@@ -7,8 +7,9 @@ import android.text.style.CharacterStyle
 import android.text.style.StrikethroughSpan
 import android.text.style.StyleSpan
 import android.text.style.UnderlineSpan
+import android.util.Log
 import com.example.noter.R
-import java.lang.IndexOutOfBoundsException
+import java.lang.IllegalArgumentException
 
 interface BaseTextFormatter {
 
@@ -54,7 +55,7 @@ class TextFormatter: BaseTextFormatter {
         val spanContainers = mutableListOf<SpanContainer>()
         val spanClasses = arrayOf(StyleSpan::class.java, UnderlineSpan::class.java, StrikethroughSpan::class.java)
         for (spanClass in spanClasses) {
-            val spanType = TextFormatterType.valueOf(spanClass.simpleName)
+            val spanType = resolveTypeFromSimpleName(spanClass.simpleName)
             getSpecificSpans(
                 text = text,
                 spans = text.getSpans(0, text.length, spanClass),
@@ -117,11 +118,20 @@ class TextFormatter: BaseTextFormatter {
             else -> TextFormatterType.BOLD
         }
     }
+
+    fun resolveTypeFromSimpleName(simpleName: String): TextFormatterType {
+        return when(simpleName) {
+            "StyleSpan" -> TextFormatterType.BOLD
+            "UnderlineSpan" -> TextFormatterType.UNDERLINED
+            "StrikethroughSpan" -> TextFormatterType.STRIKETHROUGH
+            else -> TextFormatterType.BOLD
+        }
+    }
 }
 
-enum class TextFormatterType(val simpleName: String) {
-    BOLD("StyleSpans"),
-    ITALIC("StyleSpans"),
-    UNDERLINED("UnderlineSpan"),
-    STRIKETHROUGH("StrikeThroughSpan")
+enum class TextFormatterType() {
+    BOLD,
+    ITALIC,
+    UNDERLINED,
+    STRIKETHROUGH
 }

@@ -52,7 +52,7 @@ class FolderNotesFragment: Fragment(R.layout.folder_notes_fragment) {
 
     private fun showDeleteFolderDialog() {
         val alertDialog = CustomAlertDialog(
-            myContext = requireContext(),
+            context = requireContext(),
             positiveButtonClickHandler = (::alertDialogPositiveButtonClickHandler),
             dialogType = AlertDialogType.DELETE_FOLDER
         )

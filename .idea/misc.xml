@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../layout/custom_preview.xml" value="0.1" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/Noter2/app/src/main/res/drawable/bottom_sheet_corners.xml" value="0.115" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/Noter2/app/src/main/res/drawable/circle.xml" value="0.1215" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/Noter2/app/src/main/res/drawable/circle_shape.xml" value="0.1215" />
@@ -33,6 +34,15 @@
         <entry key="..\:/Users/admin/AndroidStudioProjects/Noter2/app/src/main/res/menu/folder_notes_menu.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/Noter2/app/src/main/res/menu/home_menu.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/Noter2/app/src/main/res/menu/menu.xml" value="0.22" />
+        <entry key="app/src/main/res/drawable/ic_note_not_selected.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_note_selected.xml" value="0.177" />
+        <entry key="app/src/main/res/drawable/layer_checkbox_selection.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/sample.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/selected_vector.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/unselected_vector.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/holder_fragment.xml" value="0.18" />
+        <entry key="app/src/main/res/layout/home_fragment.xml" value="0.16875" />
+        <entry key="app/src/main/res/layout/note_rv_item.xml" value="0.22" />
       </map>
     </option>
   </component>

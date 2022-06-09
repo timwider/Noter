@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/selection_bottom_drawable"
+        android:drawable="@drawable/ic_note_not_selected">
+    </item>
+
+
+    <item
+        android:id="@+id/selection_top_drawable"
+        android:drawable="@drawable/ic_note_selected">
+    </item>
+
+</layer-list>

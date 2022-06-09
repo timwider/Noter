@@ -27,4 +27,7 @@ interface NotesDao {
     @Query("DELETE FROM notes WHERE folderName=:folderName")
     fun deleteFolderNotes(folderName: String)
 
+    @Query("DELETE FROM notes WHERE id in (:ids)")
+    fun deleteNotesById(ids: List<Int>)
+
 }

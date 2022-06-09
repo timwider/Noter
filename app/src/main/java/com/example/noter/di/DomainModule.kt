@@ -14,6 +14,7 @@ val domainModule = module {
     factory { SaveNoteUseCase( repository = get() ) }
     factory { DeleteNoteUseCase( repository = get() ) }
     factory { GetNotesNoFolderUseCase(repository = get()) }
+    factory { DeleteNotesByIdUseCase(repository = get()) }
 
     // For note folders
     factory { GetFoldersUseCase(repository = get()) }

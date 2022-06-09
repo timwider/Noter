@@ -12,7 +12,6 @@ import com.example.noter.databinding.NoteFragmentBinding
 import com.example.noter.domain.model.Note
 import com.example.noter.presentation.view.dialogs.AlertDialogType
 import com.example.noter.presentation.view.dialogs.CustomAlertDialog
-import com.example.noter.presentation.view.dialogs.DialogButtonClickHandler
 import com.example.noter.presentation.viewmodel.HomeViewModel
 import com.example.noter.presentation.viewmodel.NoteViewModel
 import com.example.noter.utils.*
@@ -23,7 +22,7 @@ const val CLICKED_NOTE_ARGS_KEY = "clickedNote"
 const val IS_NEW_NOTE_ARGS_KEY = "isNewNote"
 const val FOLDER_NAME_ARGS_KEY = "folderName"
 
-class NoteFragment: Fragment(R.layout.note_fragment), DialogButtonClickHandler {
+class NoteFragment: Fragment(R.layout.note_fragment) {
 
     private val noteViewModel: NoteViewModel by viewModel()
     private val homeViewModel: HomeViewModel by sharedViewModel()
@@ -109,7 +108,7 @@ class NoteFragment: Fragment(R.layout.note_fragment), DialogButtonClickHandler {
 
     private fun showDeleteAlertDialog() {
         CustomAlertDialog(
-            myContext = requireContext(),
+            context = requireContext(),
             positiveButtonClickHandler = (::positiveButtonClickHandler),
             dialogType = AlertDialogType.DELETE_NOTE)
             .showDialog()
@@ -168,7 +167,7 @@ class NoteFragment: Fragment(R.layout.note_fragment), DialogButtonClickHandler {
         }
     }
 
-    override fun positiveButtonClickHandler() {
+    private fun positiveButtonClickHandler() {
         if (!isNewNote) {
             noteViewModel.deleteOldNote()
         } else binding.etNoteContent.text.clear()
