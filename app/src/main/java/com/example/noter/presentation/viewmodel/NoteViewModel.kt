@@ -12,21 +12,18 @@ import com.example.noter.utils.SpanContainer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+const val ID_NOT_SET = 0
+
 class NoteViewModel(
     private val saveNoteUseCase: SaveNoteUseCase,
     private val deleteNoteUseCase: DeleteNoteUseCase,
     private val updateNoteUseCase: UpdateNoteUseCase,
 ): ViewModel() {
-
     private val _clickedNote = MutableLiveData<Note>()
-    val clickedNote: LiveData<Note> = _clickedNote
-
-    val isNoteUpdated = MutableLiveData(false)
-    val noteToUpdateLiveData = MutableLiveData<Note>()
-
+    private val clickedNote: LiveData<Note> = _clickedNote
+    private val noteToUpdateLiveData = MutableLiveData<Note>()
     private val folderName = MutableLiveData("")
-
-    val noteState = MutableLiveData(NoteState.NOT_SET)
+    private val noteState = MutableLiveData(NoteState.NOT_SET)
 
     private fun updateExistingNote(content: String, spanContainers: List<SpanContainer>) {
         val noteToUpdate = Note(
@@ -44,16 +41,16 @@ class NoteViewModel(
         noteState.value = NoteState.UPDATED
     }
 
-    fun getClickedNoteAndDate() : Note {
-        return clickedNote.value!!
-    }
+    fun getClickedNoteAndDate() : Note = clickedNote.value!!
 
     fun getNoteDateCreated() : String = clickedNote.value!!.dateCreated
 
     private fun saveNewNote(content: String, dateCreated: String, spanContainers: List<SpanContainer>) {
-        val newNote = Note(id = 0,
+        val newNote = Note(
+            id = ID_NOT_SET,
             dateCreated = dateCreated,
-            content = content, folderName = folderName.value!!,
+            content = content,
+            folderName = folderName.value!!,
             spanContainers = spanContainers)
 
         viewModelScope.launch(Dispatchers.IO) {
@@ -67,11 +64,8 @@ class NoteViewModel(
         }
     }
 
-    fun setNote(note: Note) {
-        _clickedNote.value = note
-    }
+    fun setNote(note: Note) { _clickedNote.value = note }
 
-    // I can
     fun resolveNoteOnStop(isNewNote: Boolean, content: String, dateCreated: String, spanContainers: List<SpanContainer>) {
         when {
             isNewNote && content.isNotEmpty() -> saveNewNote(content, dateCreated, spanContainers)
@@ -80,12 +74,9 @@ class NoteViewModel(
         }
     }
 
-    fun setFolderName(name: String) {
-        folderName.value = name
-    }
+    fun setFolderName(name: String) { folderName.value = name }
 
     fun getNoteSpans(): List<SpanContainer>? = _clickedNote.value?.spanContainers
-
 }
 
 enum class NoteState{

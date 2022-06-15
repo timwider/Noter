@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
-    android:layout_width="match_parent">
+    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:orientation="horizontal"
@@ -35,25 +35,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     app:drawableStartCompat="@drawable/ic_arrow_left" />
-
-
-                <TextView
-                    android:id="@+id/btn_clear_spans"
-                    android:visibility="visible"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableRight="@drawable/ic_delete_grey"
-                    android:layout_weight="1"
-                    android:layout_gravity="center_vertical"/>
-
-                <TextView
-                    android:id="@+id/btn_apply_spans"
-                    android:visibility="visible"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableRight="@drawable/ic_check"
-                    android:layout_weight="1"
-                    android:layout_gravity="center_vertical"/>
             </LinearLayout>
         </androidx.appcompat.widget.Toolbar>
     </LinearLayout>
@@ -64,7 +45,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="19dp"
-        android:text="18 апреля"
+        tools:text="18 апреля"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar_parent" />
 
@@ -82,7 +63,10 @@
         app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_note_date" />
+        app:layout_constraintTop_toBottomOf="@id/tv_note_date"
+        android:autofillHints="name"
+        android:inputType="text"
+        android:hint="@string/your_note_hint" />
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
@@ -113,28 +97,33 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:src="@drawable/ic_bold" />
+                    android:src="@drawable/ic_bold"
+                    android:contentDescription="@string/iv_content_description_bold" />
 
                 <ImageView
                     android:id="@+id/iv_underlined"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:src="@drawable/ic_underlined" />
+                    android:src="@drawable/ic_underlined"
+                    android:contentDescription="@string/iv_content_description_underlined"/>
 
                 <ImageView
                     android:id="@+id/iv_italic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:src="@drawable/ic_italic" />
+                    android:src="@drawable/ic_italic"
+                    android:contentDescription="@string/iv_content_description_italic"/>
 
                 <ImageView
                     android:id="@+id/iv_strikethrough"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:src="@drawable/ic_strikethrough" />
+                    android:src="@drawable/ic_strikethrough"
+                    android:contentDescription="@string/iv_content_description_strikethrough"/>
+
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 

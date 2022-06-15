@@ -42,6 +42,7 @@
         <entry key="app/src/main/res/drawable/unselected_vector.xml" value="0.1" />
         <entry key="app/src/main/res/layout/holder_fragment.xml" value="0.18" />
         <entry key="app/src/main/res/layout/home_fragment.xml" value="0.16875" />
+        <entry key="app/src/main/res/layout/note_fragment.xml" value="0.33" />
         <entry key="app/src/main/res/layout/note_rv_item.xml" value="0.22" />
       </map>
     </option>

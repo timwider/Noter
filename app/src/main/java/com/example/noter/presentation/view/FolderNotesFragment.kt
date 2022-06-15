@@ -53,7 +53,7 @@ class FolderNotesFragment: Fragment(R.layout.folder_notes_fragment) {
     private fun showDeleteFolderDialog() {
         val alertDialog = CustomAlertDialog(
             context = requireContext(),
-            positiveButtonClickHandler = (::alertDialogPositiveButtonClickHandler),
+            positiveButtonClickHandler = ::alertDialogPositiveButtonClickHandler,
             dialogType = AlertDialogType.DELETE_FOLDER
         )
 
@@ -74,6 +74,7 @@ class FolderNotesFragment: Fragment(R.layout.folder_notes_fragment) {
 
         val bundle = Bundle()
         bundle.putSerializable(ARGS_CLICKED_NOTE_KEY, noteItem)
+        bundle.putBoolean(IS_NEW_NOTE_ARGS_KEY, false)
         val noteFragment = NoteFragment()
         noteFragment.arguments = bundle
         navigateToNote(noteFragment = noteFragment)
@@ -82,6 +83,7 @@ class FolderNotesFragment: Fragment(R.layout.folder_notes_fragment) {
     private fun onFabClick(folderName: String) {
         val bundle = Bundle()
         bundle.putString(FOLDER_NAME_ARGS_KEY, folderName)
+        bundle.putBoolean(IS_NEW_NOTE_ARGS_KEY, true)
         val noteFragment = NoteFragment()
         noteFragment.arguments = bundle
         navigateToNote(noteFragment = noteFragment)

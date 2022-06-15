@@ -12,10 +12,8 @@ import com.example.noter.databinding.NoteFragmentBinding
 import com.example.noter.domain.model.Note
 import com.example.noter.presentation.view.dialogs.AlertDialogType
 import com.example.noter.presentation.view.dialogs.CustomAlertDialog
-import com.example.noter.presentation.viewmodel.HomeViewModel
 import com.example.noter.presentation.viewmodel.NoteViewModel
 import com.example.noter.utils.*
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 const val CLICKED_NOTE_ARGS_KEY = "clickedNote"
@@ -25,9 +23,8 @@ const val FOLDER_NAME_ARGS_KEY = "folderName"
 class NoteFragment: Fragment(R.layout.note_fragment) {
 
     private val noteViewModel: NoteViewModel by viewModel()
-    private val homeViewModel: HomeViewModel by sharedViewModel()
     private lateinit var binding: NoteFragmentBinding
-    private var isNewNote = false
+    private var isNewNote = true
     private val textFormatter = TextFormatter()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -41,15 +38,8 @@ class NoteFragment: Fragment(R.layout.note_fragment) {
         if (isNewNote) Calendar().getCurrentDate(resources) else noteViewModel.getNoteDateCreated()
 
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        // Should call something like this, or find out why this fragment gets destroyed in the first place
-//        homeViewModel.hasConfigurationChanged.value = true
-        super.onSaveInstanceState(outState)
-    }
-
     private fun setupData() {
         getNoteFromArgs()
-        getFolderNameIfPresent()
         setFolderName()
         fetchNoteData()
         setSpansFromContainers(noteViewModel.getNoteSpans())
@@ -109,7 +99,7 @@ class NoteFragment: Fragment(R.layout.note_fragment) {
     private fun showDeleteAlertDialog() {
         CustomAlertDialog(
             context = requireContext(),
-            positiveButtonClickHandler = (::positiveButtonClickHandler),
+            positiveButtonClickHandler = ::positiveButtonClickHandler,
             dialogType = AlertDialogType.DELETE_NOTE)
             .showDialog()
     }
@@ -147,25 +137,13 @@ class NoteFragment: Fragment(R.layout.note_fragment) {
         }
     }
 
-    private fun getFolderNameIfPresent() {
-        if (!isNewNote) {
-            noteViewModel.clickedNote.value!!.folderName.apply {
-                if (this.isNotEmpty()) noteViewModel.setFolderName(name = this)
-            }
-        }
-    }
     private fun setFolderName() {
-        val noteFolder = arguments?.getSerializable(FOLDER_NAME_ARGS_KEY) as String?
-        noteFolder?.let {
-            noteViewModel.setFolderName(name = it)
-        }
+        val noteFolder = arguments?.getString(FOLDER_NAME_ARGS_KEY)
+        noteFolder?.let { noteViewModel.setFolderName(name = it) }
     }
 
-    private fun onBack(): View.OnClickListener {
-        return View.OnClickListener {
-            parentFragmentManager.popBackStack()
-        }
-    }
+    private fun onBack(): View.OnClickListener =
+        View.OnClickListener { parentFragmentManager.popBackStack() }
 
     private fun positiveButtonClickHandler() {
         if (!isNewNote) {

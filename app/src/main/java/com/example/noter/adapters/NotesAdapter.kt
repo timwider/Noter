@@ -17,7 +17,7 @@ import com.example.noter.utils.NoteSelectionState
 
 class NotesAdapter(
     private val noteClickListener: (NoteRV, ImageView) -> Unit,
-    private val noteLongClickListener: (NoteRV, ImageView) -> Unit
+    private val noteLongClickListener: (NoteRV) -> Unit
 
 ): ListAdapter<NoteRV, NotesAdapter.ViewHolder>(NotesCallback()), NoteFormatterSetup {
 
@@ -52,14 +52,14 @@ class NotesAdapter(
                 holder.ivSelection.visibility = View.VISIBLE
             }
             NoteSelectionState.NOT_SELECTED -> {
+                holder.ivSelection.visibility = View.VISIBLE
                     holder.ivSelection.setImageDrawable(
                         ResourcesCompat.getDrawable(
-                            holder.ivSelection.context.resources,
+                            holder.noteCard.context.resources,
                             R.drawable.unselected_vector,
                             null
                         )
                     )
-                holder.ivSelection.visibility = View.VISIBLE
                 }
             NoteSelectionState.NO_SELECTION -> {
                 holder.ivSelection.visibility = View.GONE
@@ -67,7 +67,7 @@ class NotesAdapter(
         }
 
         holder.noteCard.setOnClickListener{ noteClickListener(noteItem, holder.ivSelection) }
-        holder.noteCard.setOnLongClickListener { noteLongClickListener(noteItem, holder.ivSelection); true }
+        holder.noteCard.setOnLongClickListener { noteLongClickListener(noteItem); true }
     }
 
 

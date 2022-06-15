@@ -65,11 +65,13 @@ enum class NoteSelectionState {
 
 enum class SelectionMode {
     ENABLED,
-    DISABLED
+    DISABLED,
+    NOT_SET // this is the default state
 }
 
 enum class SelectionModeAction {
     DELETE,
     SELECT_ALL,
-    CANCEL
+    CANCEL,
+    NOT_SET // default
 }

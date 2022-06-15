@@ -45,4 +45,10 @@
     <string name="delete_selected_notes">Удалить выбранные заметки</string>
     <string name="delete_selected_notes_description">Вы уверены, что хотите удалить выбранные заметки? Восстановить их будет невозможно.</string>
     <string name="delete_folder_description">Вы уверены, что хотите удалить папку? Все заметки внутри неё также будут удалены.</string>
+    <string name="your_note_hint">Заметка</string>
+    <string name="iv_content_description_bold">Жирный</string>
+    <string name="iv_content_description_underlined">Подчёркнутый</string>
+    <string name="iv_content_description_italic">Курсив</string>
+    <string name="iv_content_description_strikethrough">Зачёркнутый</string>
+    <string name="select_notes_to_delete">Выберите заметки для удаления.</string>
 </resources>

@@ -45,13 +45,13 @@
 
         <ImageView
             android:id="@+id/iv_selection_state"
-            android:visibility="visible"
             android:layout_width="0dp"
-            android:src="@drawable/unselected_vector"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="20dp"
-            android:layout_height="wrap_content"/>
+            android:layout_weight="1"
+            android:src="@drawable/unselected_vector"
+            android:visibility="visible" />
 
     </LinearLayout>
 

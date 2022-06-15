@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.DialogInterface
 import androidx.appcompat.app.AlertDialog
 import com.example.noter.R
+import com.example.noter.adapters.NotesAdapter
 import kotlin.reflect.KFunction0
 
 class CustomAlertDialog(
@@ -17,7 +18,9 @@ class CustomAlertDialog(
         return AlertDialog.Builder(context)
             .setTitle(resolveResId().first)
             .setMessage(resolveResId().second)
-            .setPositiveButton(R.string.delete_note_positive_button) { p1, p2 -> positiveButtonClickHandler }
+            .setPositiveButton(R.string.delete_note_positive_button) { p1, p2 ->
+                positiveButtonClickHandler
+            }
             .setNegativeButton(R.string.delete_note_negative_button) { dialog, _ -> dialog.dismiss() }
 
     }
