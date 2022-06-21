@@ -1,17 +1,17 @@
 package com.example.noter.presentation.view
 
+import android.graphics.drawable.AnimatedVectorDrawable
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
-import androidx.appcompat.app.AlertDialog
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.noter.R
 import com.example.noter.adapters.NotesAdapter
 import com.example.noter.databinding.HomeFragmentBinding
-import com.example.noter.presentation.view.dialogs.AlertDialogType
-import com.example.noter.presentation.view.dialogs.CustomAlertDialog
-import com.example.noter.presentation.view.dialogs.DialogManager
+import com.example.noter.presentation.view.dialogs.DeleteBottomSheetDialog
 import com.example.noter.presentation.viewmodel.HolderViewModel
 import com.example.noter.presentation.viewmodel.HomeViewModel
 import com.example.noter.utils.*
@@ -26,7 +26,7 @@ class HomeFragment: Fragment(R.layout.home_fragment) {
     private lateinit var binding: HomeFragmentBinding
     private val homeViewModel: HomeViewModel by sharedViewModel()
     private val holderViewModel: HolderViewModel by sharedViewModel()
-    private val noteSelectionAnimator = NoteSelectionAnimator()
+    private val rvMapper = AdapterMapper()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = HomeFragmentBinding.bind(view)
@@ -35,21 +35,20 @@ class HomeFragment: Fragment(R.layout.home_fragment) {
             noteClickListener = { noteRV, imageView -> onNoteClick(noteRV, imageView) },
             noteLongClickListener = { noteRV -> homeViewModel.onFirstNoteSelected(noteRV) }
         )
-
         val selectionHelper = SelectionHelper(adapter = rvAdapter)
-
         binding.rvNotes.adapter = rvAdapter
         binding.rvNotes.layoutManager = LinearLayoutManager(requireContext())
-
         homeViewModel.getNotes(rewriteValue = true)
 
         registerObservers(adapter = rvAdapter, selectionHelper = selectionHelper)
         super.onViewCreated(view, savedInstanceState)
     }
 
+
+
     private fun registerObservers(selectionHelper: SelectionHelper, adapter: NotesAdapter) {
         homeViewModel.notes.observe(viewLifecycleOwner) { notes ->
-            adapter.submitList(RecyclerViewAdapterModelMapper().listToAdapterModel(notes))
+            adapter.submitList(rvMapper.listToAdapterModel(notes))
         }
 
         homeViewModel.selectionModeAction.observe(viewLifecycleOwner) { action ->
@@ -83,29 +82,31 @@ class HomeFragment: Fragment(R.layout.home_fragment) {
     }
 
     private fun showDeleteDialog() {
-        CustomAlertDialog(
-            context = requireContext(),
-            dialogType = AlertDialogType.DELETE_SELECTED_NOTES,
-            positiveButtonClickHandler = ::handleDeleteAction)
-            .showDialog()
+        val dialog = DeleteBottomSheetDialog(::handleDeleteAction)
+        val args = Bundle()
+        args.putString(DELETE_DIALOG_TYPE_ARGS_KEY, DELETE_SELECTED_NOTES)
+        dialog.arguments = args
+        dialog.show(parentFragmentManager, null)
     }
 
     // This is called after positive button was clicked in a dialog
     private fun handleDeleteAction() {
         if (!homeViewModel.handleDeleteSelectedNotes()) {
-            DialogManager().makeSnackbar(requireView(), getString(R.string.select_notes_to_delete))
-        }
+            Snackbar.make(requireView(), getString(R.string.select_notes_to_delete), Snackbar.LENGTH_SHORT).show()
+        } else homeViewModel.disableSelectionMode()
     }
 
     private fun onNoteClick(note: NoteRV, ivSelection: ImageView) {
         when (note.selectionState) {
             NoteSelectionState.SELECTED -> {
-                noteSelectionAnimator.onNoteUnselected(ivSelection)
+                ivSelection.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.selected_vector, null))
+                (ivSelection.drawable as AnimatedVectorDrawable).start()
                 homeViewModel.removeSelectedNoteId(note.id)
                 note.selectionState = NoteSelectionState.NOT_SELECTED
             }
             NoteSelectionState.NOT_SELECTED -> {
-                noteSelectionAnimator.onNoteSelected(ivSelection)
+                ivSelection.setImageDrawable(ResourcesCompat.getDrawable(resources, R.drawable.unselected_vector, null))
+                (ivSelection.drawable as AnimatedVectorDrawable).start()
                 homeViewModel.addSelectedNoteId(note.id)
                 note.selectionState = NoteSelectionState.SELECTED
             }
@@ -114,8 +115,12 @@ class HomeFragment: Fragment(R.layout.home_fragment) {
     }
 
     private fun openOrAddNote(isNewNote: Boolean, note: NoteRV?) {
-        val noteFragment = FragmentProvider().provideNoteFragment(isNewNote, note)
-        navigateToNote(noteFragment)
+        val fragment = NoteFragment()
+        val args = Bundle()
+        if (!isNewNote) args.putSerializable(CLICKED_NOTE_ARGS_KEY, rvMapper.toDomainModel(note!!))
+        args.putBoolean(IS_NEW_NOTE_ARGS_KEY, isNewNote)
+        fragment.arguments = args
+        navigateToNote(fragment)
     }
 
     private fun navigateToNote(noteFragment: NoteFragment) {

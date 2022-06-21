@@ -10,8 +10,6 @@ import com.example.noter.adapters.FolderNotesAdapter
 import com.example.noter.databinding.FolderNotesFragmentBinding
 import com.example.noter.domain.model.Note
 import com.example.noter.domain.model.NoteFolder
-import com.example.noter.presentation.view.dialogs.AlertDialogType
-import com.example.noter.presentation.view.dialogs.CustomAlertDialog
 import com.example.noter.presentation.viewmodel.FolderNotesViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -51,13 +49,7 @@ class FolderNotesFragment: Fragment(R.layout.folder_notes_fragment) {
     }
 
     private fun showDeleteFolderDialog() {
-        val alertDialog = CustomAlertDialog(
-            context = requireContext(),
-            positiveButtonClickHandler = ::alertDialogPositiveButtonClickHandler,
-            dialogType = AlertDialogType.DELETE_FOLDER
-        )
-
-        alertDialog.showDialog()
+        // todo replace dialog
     }
 
     private fun alertDialogPositiveButtonClickHandler() {

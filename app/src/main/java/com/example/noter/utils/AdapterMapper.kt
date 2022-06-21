@@ -2,9 +2,9 @@ package com.example.noter.utils
 
 import com.example.noter.domain.model.Note
 
-class RecyclerViewAdapterModelMapper {
+class AdapterMapper {
 
-    fun toAdapterModel(note: Note): NoteRV =
+    private fun toAdapterModel(note: Note): NoteRV =
         NoteRV(
             id = note.id,
             dateCreated = note.dateCreated,

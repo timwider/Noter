@@ -102,11 +102,11 @@
 
                 <ImageView
                     android:id="@+id/iv_underlined"
-                    android:layout_width="wrap_content"
+                    android:layout_width="97dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:src="@drawable/ic_underlined"
-                    android:contentDescription="@string/iv_content_description_underlined"/>
+                    android:contentDescription="@string/iv_content_description_underlined"
+                    android:src="@drawable/ic_underlined" />
 
                 <ImageView
                     android:id="@+id/iv_italic"

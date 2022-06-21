@@ -6,10 +6,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import com.example.noter.R
 import com.example.noter.databinding.CreateFolderFragmentBinding
 import com.example.noter.presentation.viewmodel.CreateFolderViewModel
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -25,7 +27,7 @@ class CreateFolderFragment: BottomSheetDialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setStyle(DialogFragment.STYLE_NORMAL, R.style.CustomBottomSheetDialog)
+        setStyle(DialogFragment.STYLE_NORMAL, R.style.AddFolderBottomSheet)
     }
 
     override fun onCreateView(
@@ -35,7 +37,6 @@ class CreateFolderFragment: BottomSheetDialogFragment() {
     ): View {
 
         binding = CreateFolderFragmentBinding.inflate(inflater, container, false)
-
         return binding.root
     }
 
@@ -76,7 +77,6 @@ class CreateFolderFragment: BottomSheetDialogFragment() {
             SnackbarMessageType.NAME_TAKEN -> R.string.folder_name_taken_message
             SnackbarMessageType.NO_NAME_PROVIDED -> R.string.no_folder_name_message
         }
-        Snackbar.make(binding.buttonsRelativeLayout, message, Snackbar.LENGTH_SHORT).show()
     }
 }
 

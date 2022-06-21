@@ -41,8 +41,9 @@ class HomeViewModel(
 
     private fun onSelectionModeAction(action: SelectionModeAction) {
         _selectionModeAction.value = action
-        _selectionMode.value = SelectionMode.DISABLED
     }
+
+    fun disableSelectionMode() { _selectionMode.value = SelectionMode.DISABLED }
 
     fun deleteNotesByIds(ids: List<Int>) {
         viewModelScope.launch(Dispatchers.IO) {

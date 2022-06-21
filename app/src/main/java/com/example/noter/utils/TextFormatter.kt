@@ -7,38 +7,11 @@ import android.text.style.CharacterStyle
 import android.text.style.StrikethroughSpan
 import android.text.style.StyleSpan
 import android.text.style.UnderlineSpan
-import android.util.Log
 import com.example.noter.R
-import java.lang.IllegalArgumentException
 
-interface BaseTextFormatter {
+class TextFormatter {
 
     fun formatText(
-        text: Spannable,
-        type: TextFormatterType,
-        selectionStart: Int,
-        selectionEnd: Int
-    ) : SpannableStringBuilder
-
-    fun grabAllSpans(text: Spannable) : List<SpanContainer>
-
-    fun getSpecificSpans(
-        text: Spannable,
-        spanType: TextFormatterType,
-        spans: Array<out CharacterStyle>,
-        spanContainers: MutableList<SpanContainer>,
-        // This is for StyleSpan spans. ID tells us whether it's bold or italic.
-        areStyleSpans: Boolean
-    )
-
-    fun setSpansFromContainers(containers: List<SpanContainer>?, text: Spannable): SpannableStringBuilder
-
-    fun setTypeFromId(id: Int): TextFormatterType
-}
-
-class TextFormatter: BaseTextFormatter {
-
-    override fun formatText(
         text: Spannable,
         type: TextFormatterType,
         selectionStart: Int,
@@ -51,7 +24,7 @@ class TextFormatter: BaseTextFormatter {
         return spannableString
     }
 
-    override fun grabAllSpans(text: Spannable): List<SpanContainer> {
+    fun grabAllSpans(text: Spannable): List<SpanContainer> {
         val spanContainers = mutableListOf<SpanContainer>()
         val spanClasses = arrayOf(StyleSpan::class.java, UnderlineSpan::class.java, StrikethroughSpan::class.java)
         for (spanClass in spanClasses) {
@@ -67,7 +40,7 @@ class TextFormatter: BaseTextFormatter {
         return spanContainers.toSet().toList()
     }
 
-    override fun getSpecificSpans(
+    private fun getSpecificSpans(
         text: Spannable,
         spanType: TextFormatterType,
         spans: Array<out CharacterStyle>,
@@ -92,12 +65,12 @@ class TextFormatter: BaseTextFormatter {
         return when (type) {
             TextFormatterType.BOLD -> StyleSpan(Typeface.BOLD)
             TextFormatterType.ITALIC -> StyleSpan(Typeface.ITALIC)
-            TextFormatterType.UNDERLINED -> UnderlineSpan()
+            TextFormatterType.UNDERLINE -> UnderlineSpan()
             TextFormatterType.STRIKETHROUGH -> StrikethroughSpan()
         }
     }
 
-    override fun setSpansFromContainers(containers: List<SpanContainer>?, text: Spannable): SpannableStringBuilder {
+    fun setSpansFromContainers(containers: List<SpanContainer>?, text: Spannable): SpannableStringBuilder {
         val spannableText = SpannableStringBuilder(text)
         containers?.let {
             for (container in containers) {
@@ -109,29 +82,29 @@ class TextFormatter: BaseTextFormatter {
         return spannableText
     }
 
-    override fun setTypeFromId(id: Int): TextFormatterType {
+    fun setTypeFromId(id: Int): TextFormatterType {
         return when(id) {
             R.id.iv_bold -> TextFormatterType.BOLD
             R.id.iv_italic -> TextFormatterType.ITALIC
-            R.id.iv_underlined -> TextFormatterType.UNDERLINED
+            R.id.iv_underlined -> TextFormatterType.UNDERLINE
             R.id.iv_strikethrough -> TextFormatterType.STRIKETHROUGH
             else -> TextFormatterType.BOLD
         }
     }
 
-    fun resolveTypeFromSimpleName(simpleName: String): TextFormatterType {
+    private fun resolveTypeFromSimpleName(simpleName: String): TextFormatterType {
         return when(simpleName) {
-            "StyleSpan" -> TextFormatterType.BOLD
-            "UnderlineSpan" -> TextFormatterType.UNDERLINED
-            "StrikethroughSpan" -> TextFormatterType.STRIKETHROUGH
+            StyleSpan::class.simpleName -> TextFormatterType.BOLD
+            UnderlineSpan::class.simpleName -> TextFormatterType.UNDERLINE
+            StrikethroughSpan::class.simpleName -> TextFormatterType.STRIKETHROUGH
             else -> TextFormatterType.BOLD
         }
     }
 }
 
-enum class TextFormatterType() {
+enum class TextFormatterType {
     BOLD,
     ITALIC,
-    UNDERLINED,
+    UNDERLINE,
     STRIKETHROUGH
 }
