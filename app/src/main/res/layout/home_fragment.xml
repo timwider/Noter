@@ -5,6 +5,40 @@
     android:layout_height="match_parent">
 
 
+    <androidx.appcompat.widget.Toolbar
+        android:visibility="gone"
+        android:id="@+id/toolbar_folder_notes"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:elevation="6dp"
+        android:layout_marginTop="10dp"
+        app:menu="@menu/folder_notes_menu"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:id="@+id/tv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:drawableStartCompat="@drawable/ic_arrow_left" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/tv_folder_name"
+        android:layout_width="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_folder_notes"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="20dp"
+        android:textSize="22sp"
+        android:textColor="@color/black"
+        android:layout_marginStart="10dp"
+        android:layout_height="wrap_content"
+        android:text="Folder name"/>
+
+
     <TextView
         android:id="@+id/tv_no_notes"
         android:visibility="gone"
@@ -23,9 +57,19 @@
         android:layout_height="0dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_folder_name"
         android:layout_margin="10dp"
         app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:visibility="gone"
+        android:id="@+id/fab_add_note_to_folder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_add"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="16dp"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

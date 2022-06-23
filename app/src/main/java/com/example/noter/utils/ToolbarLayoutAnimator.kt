@@ -4,7 +4,6 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.view.View
 import android.widget.LinearLayout
-import androidx.core.view.isVisible
 import com.google.android.material.tabs.TabLayout
 
 const val ALPHA_ITEM_INVISIBLE = 0F
@@ -81,8 +80,12 @@ class ToolbarLayoutAnimator(
             .start()
     }
 
-
-    fun enableSelectionMode() = hideTabLayout()
-
-    fun disableSelectionMode() = hideSelectionLayout()
+    /**
+     * We have two if statements because SelectionMode has a 3rd param: NOT_SET,
+     * which is not handled here.
+     */
+    fun onSelectionModeChanged(selectionMode: SelectionMode) {
+        if (selectionMode == SelectionMode.ENABLED) hideTabLayout()
+        if (selectionMode == SelectionMode.DISABLED) hideSelectionLayout()
+    }
 }

@@ -10,11 +10,11 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.noter.R
 import com.example.noter.domain.model.Note
-import com.example.noter.utils.NoteFormatter
+import com.example.noter.utils.extractName
 
 class FolderNotesAdapter(
     private val noteClickListener: (Note) -> Unit
-): ListAdapter<Note, FolderNotesAdapter.ViewHolder>(FolderNotesCallback()), NoteFormatterSetup {
+): ListAdapter<Note, FolderNotesAdapter.ViewHolder>(FolderNotesCallback()) {
 
     class ViewHolder(item: View) : RecyclerView.ViewHolder(item) {
         val tvName: TextView = item.findViewById(R.id.tv_note_name)
@@ -29,7 +29,7 @@ class FolderNotesAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentItem = getItem(position)
-        holder.tvName.text = setupNoteFormatter(note = currentItem.content)
+        holder.tvName.text = currentItem.extractName()
         holder.tvDateCreated.text = currentItem.dateCreated
         holder.noteCard.setOnClickListener { noteClickListener(currentItem) }
     }
@@ -40,10 +40,6 @@ class FolderNotesAdapter(
 
         override fun areContentsTheSame(oldItem: Note, newItem: Note): Boolean =
             oldItem.id == newItem.id
-    }
-
-    override fun setupNoteFormatter(note: String): String {
-        return NoteFormatter(note = note).extractName()
     }
 
 }

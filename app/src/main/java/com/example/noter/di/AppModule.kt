@@ -6,15 +6,13 @@ import org.koin.dsl.module
 
 
 val appModule = module {
-    viewModel { HomeViewModel(getNotesNoFolderUseCase = get(), deleteNotesByIdUseCase = get()) }
+    viewModel { HomeViewModel(
+        getNotesNoFolderUseCase = get(),
+        deleteNotesByIdUseCase = get(),
+        getFolderNotesUseCase = get()) }
     viewModel { CreateFolderViewModel(saveFolderUseCase = get()) }
-    viewModel { HolderViewModel(getFoldersUseCase = get()) }
+    viewModel { HolderViewModel() }
     viewModel { FolderViewModel(getFoldersUseCase = get()) }
-    viewModel { FolderNotesViewModel(getFolderNotesUseCase = get(), deleteFolderNotesUseCase = get(), deleteFolderUseCase = get()) }
-    viewModel {
-        NoteViewModel(
-            saveNoteUseCase = get(),
-            deleteNoteUseCase = get(),
-            updateNoteUseCase = get())
-    }
+    viewModel { FolderNotesViewModel(deleteFolderUseCase = get(), deleteFolderNotesUseCase = get()) }
+    viewModel { NoteViewModel(saveNoteUseCase = get(), deleteNoteUseCase = get(), updateNoteUseCase = get()) }
 }

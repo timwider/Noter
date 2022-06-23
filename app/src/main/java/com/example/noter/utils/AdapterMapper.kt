@@ -46,8 +46,10 @@ class AdapterMapper {
     }
 }
 
-// This model is for RecyclerView adapter only. It stays on presentation level and is mapped to
-// domain once it moves out of the adapter (e.g. to fragment when opening a note)
+/**
+ * This model is for RecyclerView adapter only. It stays on presentation level and is mapped to
+ * domain once it moves out of the adapter (e.g. to fragment when opening a note)
+ */
 class NoteRV(
     val id: Int,
     val dateCreated: String,

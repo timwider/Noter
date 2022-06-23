@@ -4,15 +4,7 @@
         <item name="textAllCaps">false</item>
         <item name="android:textAllCaps">false</item>
     </style>
-
-:wq
-
-
-
-
-
-
-    <style name="AddFolderBottomSheet" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
+    <style name="AddFolderBottomSheet" parent="Theme.Material3.DayNight.BottomSheetDialog">
         <item name="android:windowSoftInputMode">adjustResize|stateVisible</item>
     </style>
 </resources>

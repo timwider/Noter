@@ -3,6 +3,8 @@ package com.example.noter.presentation.view
 import android.content.Intent
 import android.os.Bundle
 import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.SpannedString
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
@@ -18,7 +20,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 const val CLICKED_NOTE_ARGS_KEY = "clickedNote"
 const val IS_NEW_NOTE_ARGS_KEY = "isNewNote"
-const val FOLDER_NAME_ARGS_KEY = "folderName"
 const val SHARE_INTENT_TYPE = "text/plain"
 
 
@@ -38,18 +39,19 @@ class NoteFragment: Fragment(R.layout.note_fragment) {
         if (!isNewNote) {
             val clickedNote = arguments?.getSerializable(CLICKED_NOTE_ARGS_KEY) as Note
             noteViewModel.setNote(note = clickedNote)
-            binding.tvNoteDate.text = clickedNote.dateCreated
-            binding.etNoteContent.setText(clickedNote.content)
-            noteDateCreated = noteViewModel.getNoteDateCreated()
+            noteDateCreated = clickedNote.dateCreated
+            binding.tvNoteDate.text = noteDateCreated
+
+            val spannedText = textFormatter.setSpansFromContainers(
+                containers = noteViewModel.getNoteSpans(),
+                text = clickedNote.content
+            )
+            binding.etNoteContent.setText(spannedText, TextView.BufferType.SPANNABLE)
+        } else binding.tvNoteDate.text = noteDateCreated
+
+        arguments?.getString(FOLDER_NAME_ARGS_KEY)?.let {
+            noteViewModel.setFolderName(name = it)
         }
-        val noteFolder = arguments?.getString(FOLDER_NAME_ARGS_KEY)
-        noteFolder?.let { noteViewModel.setFolderName(name = it) }
-
-        binding.etNoteContent.setText(
-            textFormatter.setSpansFromContainers(noteViewModel.getNoteSpans(),
-                binding.etNoteContent.text as Spannable), TextView.BufferType.SPANNABLE)
-
-        binding.tvNoteDate.text = noteDateCreated
 
         binding.backButton.setOnClickListener { parentFragmentManager.popBackStack() }
         binding.toolbar.setOnMenuItemClickListener { toolbarMenuItemClickListener(it); true }
@@ -74,10 +76,13 @@ class NoteFragment: Fragment(R.layout.note_fragment) {
     }
 
     private fun launchTextFormatter(styleSpan: TextFormatterType) {
-        val text = binding.etNoteContent.text as Spannable
-        val formattedText = textFormatter.formatText(
-            text, styleSpan, binding.etNoteContent.selectionStart, binding.etNoteContent.selectionEnd)
-        binding.etNoteContent.setText(formattedText, TextView.BufferType.SPANNABLE)
+        if (binding.etNoteContent.hasSelection()) {
+            //todo i shouldn't pass all note content, just selected text
+            val text = binding.etNoteContent.text as Spannable
+            val formattedText = textFormatter.formatText(
+                text, styleSpan, binding.etNoteContent.selectionStart, binding.etNoteContent.selectionEnd)
+            binding.etNoteContent.setText(formattedText, TextView.BufferType.SPANNABLE)
+        }
     }
 
     private fun shareNote(noteContent: String)  {
@@ -86,7 +91,7 @@ class NoteFragment: Fragment(R.layout.note_fragment) {
             putExtra(Intent.EXTRA_TEXT, noteContent)
             type = SHARE_INTENT_TYPE
         }
-        Intent.createChooser(intent, "This is my sample title")
+        Intent.createChooser(intent, null)
         startActivity(intent)
     }
 

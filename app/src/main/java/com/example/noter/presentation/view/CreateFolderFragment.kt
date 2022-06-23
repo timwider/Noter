@@ -11,6 +11,7 @@ import androidx.fragment.app.DialogFragment
 import com.example.noter.R
 import com.example.noter.databinding.CreateFolderFragmentBinding
 import com.example.noter.presentation.viewmodel.CreateFolderViewModel
+import com.example.noter.utils.KeyboardAnimator
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -25,9 +26,14 @@ class CreateFolderFragment: BottomSheetDialogFragment() {
     private lateinit var binding: CreateFolderFragmentBinding
     private val createFolderViewModel: CreateFolderViewModel by sharedViewModel()
 
+    override fun onStart() {
+        super.onStart()
+        dialog?.window?.let { KeyboardAnimator(window = it).start() }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setStyle(DialogFragment.STYLE_NORMAL, R.style.AddFolderBottomSheet)
+        setStyle(STYLE_NORMAL, R.style.AddFolderBottomSheet)
     }
 
     override fun onCreateView(
@@ -77,6 +83,7 @@ class CreateFolderFragment: BottomSheetDialogFragment() {
             SnackbarMessageType.NAME_TAKEN -> R.string.folder_name_taken_message
             SnackbarMessageType.NO_NAME_PROVIDED -> R.string.no_folder_name_message
         }
+        Snackbar.make(requireView(), message, Snackbar.LENGTH_SHORT).show()
     }
 }
 

@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.noter.R
 import com.example.noter.adapters.FoldersAdapter
 import com.example.noter.databinding.FoldersFragmentBinding
-import com.example.noter.domain.model.NoteFolder
 import com.example.noter.presentation.viewmodel.CreateFolderViewModel
 import com.example.noter.presentation.viewmodel.FolderViewModel
 import com.example.noter.presentation.viewmodel.HolderViewModel
@@ -26,7 +25,7 @@ class FoldersFragment: Fragment(R.layout.folders_fragment) {
 
         binding = FoldersFragmentBinding.bind(view)
 
-        val foldersAdapter = FoldersAdapter { onFolderClick(noteFolder = it) }
+        val foldersAdapter = FoldersAdapter { onFolderClick(folderName = it.title) }
 
         binding.rvNoteFolders.apply {
             layoutManager = LinearLayoutManager(requireContext())
@@ -60,14 +59,10 @@ class FoldersFragment: Fragment(R.layout.folders_fragment) {
 
     private fun onAddFolder() {
         val createFolderFragment = CreateFolderFragment()
-
-        folderViewModel.noteFolders.value?.let { folderList ->
-
-            val folderNames = folderViewModel.takeFolderNames()
-            val bundle = Bundle()
-            bundle.putStringArrayList(FOLDER_LIST_ARGS, folderNames)
-            createFolderFragment.arguments = bundle
-        }
+        val folderNames = folderViewModel.takeFolderNames()
+        val bundle = Bundle()
+        bundle.putStringArrayList(FOLDER_LIST_ARGS, folderNames)
+        createFolderFragment.arguments = bundle
 
         activity?.supportFragmentManager?.let { fragmentManager ->
             createFolderFragment.showNow(
@@ -77,17 +72,17 @@ class FoldersFragment: Fragment(R.layout.folders_fragment) {
         }
     }
 
-    private fun onFolderClick(noteFolder: NoteFolder) {
+    private fun onFolderClick(folderName: String) {
 
         val bundle = Bundle()
-        bundle.putSerializable("args_note_folder_key", noteFolder)
+        bundle.putString("args_note_folder_key", folderName)
         val folderNotesFragment = FolderNotesFragment()
         folderNotesFragment.arguments = bundle
 
         activity?.supportFragmentManager?.let {
             it.beginTransaction()
                 .replace(R.id.main_fragment_container, folderNotesFragment)
-                .addToBackStack("some_name")
+                .addToBackStack(null)
                 .commit()
         }
     }

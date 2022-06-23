@@ -11,49 +11,49 @@
         android:id="@+id/tv_create_folder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
+        android:layout_marginTop="16dp"
         android:gravity="center"
         android:text="@string/create_folder_textview"
         android:textColor="@color/black"
         android:textSize="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/et_folder_name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <EditText
         android:id="@+id/et_folder_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="156dp"
         android:backgroundTint="@color/white"
+        android:gravity="center"
         android:hint="@string/et_create_folder_hint"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_create_folder"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_marginTop="20dp"/>
 
     <Button
         android:id="@+id/btn_cancel"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/btn_cancel_text"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginStart="20dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_create_folder" />
+        app:layout_constraintTop_toBottomOf="@+id/et_folder_name" />
 
     <Button
         android:id="@+id/btn_create_folder"
         style="@style/Widget.MaterialComponents.Button"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="20dp"
         android:text="@string/btn_create_folder_text"
+        android:layout_marginBottom="5dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_folder_name" />
 </androidx.constraintlayout.widget.ConstraintLayout>

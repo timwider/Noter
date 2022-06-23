@@ -1,5 +1,6 @@
 package com.example.noter.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -40,8 +41,6 @@ class NoteViewModel(
         noteToUpdateLiveData.value = noteToUpdate
         noteState.value = NoteState.UPDATED
     }
-
-    fun getClickedNoteAndDate() : Note = clickedNote.value!!
 
     fun getNoteDateCreated() : String = clickedNote.value!!.dateCreated
 

@@ -11,15 +11,15 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.noter.R
-import com.example.noter.utils.NoteFormatter
 import com.example.noter.utils.NoteRV
 import com.example.noter.utils.NoteSelectionState
+import com.example.noter.utils.extractName
 
 class NotesAdapter(
     private val noteClickListener: (NoteRV, ImageView) -> Unit,
     private val noteLongClickListener: (NoteRV) -> Unit
 
-): ListAdapter<NoteRV, NotesAdapter.ViewHolder>(NotesCallback()), NoteFormatterSetup {
+): ListAdapter<NoteRV, NotesAdapter.ViewHolder>(NotesCallback()) {
 
     class ViewHolder(item: View): RecyclerView.ViewHolder(item) {
         val tvName: TextView = item.findViewById(R.id.tv_note_name)
@@ -35,7 +35,7 @@ class NotesAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val noteItem = getItem(position)
-        holder.tvName.text = setupNoteFormatter(note = noteItem.content)
+        holder.tvName.text = noteItem.extractName()
         holder.tvDateCreated.text = noteItem.dateCreated
 
 //        val ivSelectionDrawable = (holder.ivSelection.drawable as AnimatedVectorDrawable)
@@ -80,8 +80,5 @@ class NotesAdapter(
                     oldItem.selectionState == newItem.selectionState &&
                     oldItem.content == newItem.content)
         }
-    }
-    override fun setupNoteFormatter(note: String) : String {
-        return NoteFormatter(note).extractName()
     }
 }

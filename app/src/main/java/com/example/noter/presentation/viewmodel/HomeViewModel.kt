@@ -6,7 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.noter.R
 import com.example.noter.domain.model.Note
+import com.example.noter.domain.usecase.notes.DeleteFolderNotesUseCase
 import com.example.noter.domain.usecase.notes.DeleteNotesByIdUseCase
+import com.example.noter.domain.usecase.notes.GetFolderNotesUseCase
 import com.example.noter.domain.usecase.notes.GetNotesNoFolderUseCase
 import com.example.noter.utils.*
 import kotlinx.coroutines.Dispatchers
@@ -14,14 +16,12 @@ import kotlinx.coroutines.launch
 
 class HomeViewModel(
     private val getNotesNoFolderUseCase: GetNotesNoFolderUseCase,
-    private val deleteNotesByIdUseCase: DeleteNotesByIdUseCase
+    private val deleteNotesByIdUseCase: DeleteNotesByIdUseCase,
+    private val getFolderNotesUseCase: GetFolderNotesUseCase,
 ): ViewModel() {
 
     private val _notes: MutableLiveData<List<Note>> = MutableLiveData()
     val notes = _notes as LiveData<List<Note>>
-
-    private val _spanContainers: MutableLiveData<MutableList<SpanContainer>> = MutableLiveData()
-    val spanContainers = _spanContainers as LiveData<MutableList<SpanContainer>>
 
     private val _selectionMode = MutableLiveData(SelectionMode.NOT_SET)
     val selectionMode = _selectionMode as LiveData<SelectionMode>
@@ -33,35 +33,47 @@ class HomeViewModel(
 
     fun resolveSelectionModeAction(actionId: Int) {
         when (actionId) {
-            R.id.selection_action_select_all ->  _selectionModeAction.value = SelectionModeAction.SELECT_ALL
-            R.id.selection_action_delete -> onSelectionModeAction(SelectionModeAction.DELETE)
-            R.id.selection_action_cancel ->  onSelectionModeAction(SelectionModeAction.CANCEL)
+            R.id.selection_action_select_all -> setSelectionModeAction(SelectionModeAction.SELECT_ALL)
+            R.id.selection_action_delete -> setSelectionModeAction(SelectionModeAction.DELETE)
+            R.id.selection_action_cancel -> setSelectionModeAction(SelectionModeAction.CANCEL)
         }
     }
 
-    private fun onSelectionModeAction(action: SelectionModeAction) {
-        _selectionModeAction.value = action
+    private fun setSelectionModeAction(action: SelectionModeAction) {
+        if (action == SelectionModeAction.CANCEL) {
+            disableSelectionMode()
+        } else _selectionModeAction.value = action
     }
 
     fun disableSelectionMode() { _selectionMode.value = SelectionMode.DISABLED }
 
-    fun deleteNotesByIds(ids: List<Int>) {
+    private fun deleteNotesByIds(ids: List<Int>) {
         viewModelScope.launch(Dispatchers.IO) {
             deleteNotesByIdUseCase.execute(ids)
         }
     }
 
-    fun resetSelectionModeAction() {
+    private fun deleteFolderNotes() {
+
+    }
+
+    private fun resetSelectionModeAction() {
         _selectionModeAction.value = SelectionModeAction.NOT_SET
     }
 
-    // I don't like that setValue is triggered 2 times
-    fun getNotes(rewriteValue: Boolean) {
+    // I don't like that setValue is triggered 2 times todo change it
+    fun getNotes(rewriteValue: Boolean, folderName: String?) {
 
         if (rewriteValue) _notes.value = emptyList<Note>().toMutableList()
 
-        viewModelScope.launch(Dispatchers.IO) {
-            _notes.postValue(getNotesNoFolderUseCase.execute())
+        if (folderName.isNullOrEmpty()) {
+            viewModelScope.launch(Dispatchers.IO) {
+                _notes.postValue(getNotesNoFolderUseCase.execute())
+            }
+        } else {
+            viewModelScope.launch(Dispatchers.IO) {
+                _notes.postValue(getFolderNotesUseCase.execute(folderName))
+            }
         }
     }
 
@@ -72,17 +84,21 @@ class HomeViewModel(
         _selectionMode.value = SelectionMode.ENABLED
     }
 
-    fun handleDeleteSelectedNotes(): Boolean {
+    fun handleDeleteSelectedNotes(folderName: String): Boolean {
         if (selectedNotesIds.value.isNullOrEmpty()) return false
 
         deleteNotesByIds(selectedNotesIds.value!!.toList())
-        getNotes(rewriteValue = false)
+        getNotes(rewriteValue = false, folderName)
         selectedNotesIds.value?.clear()
         resetSelectionModeAction()
         return true
     }
 
-    fun getFirstSelectedNoteId(): Int = selectedNotesIds.value?.get(0) ?: -1
+    fun getFirstSelectedNoteId(): Int {
+        return if (selectedNotesIds.value.isNullOrEmpty()) {
+            NOTE_NOT_FOUND_ID
+        } else selectedNotesIds.value?.get(0) ?: NOTE_NOT_FOUND_ID
+    }
 
     fun addSelectedNoteId(noteId: Int) = selectedNotesIds.addAndNotify(noteId)
 

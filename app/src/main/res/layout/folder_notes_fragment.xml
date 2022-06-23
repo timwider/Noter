@@ -38,24 +38,13 @@
         app:layout_constraintTop_toBottomOf="@id/toolbar_folder_notes"
         app:layout_constraintStart_toStartOf="parent"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_folder_notes"
+    <FrameLayout
+        android:id="@+id/folder_notes_container"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_selected_folder_name"
-        android:layout_margin="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btn_add_note"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_add"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="16dp"/>
-
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,8 +11,7 @@ import com.example.noter.R
 
 class TextFormatter {
 
-    fun formatText(
-        text: Spannable,
+    fun formatText(text: Spannable,
         type: TextFormatterType,
         selectionStart: Int,
         selectionEnd: Int
@@ -20,7 +19,7 @@ class TextFormatter {
 
         val textStyle = resolveTextStyle(type)
         val spannableString = SpannableStringBuilder(text)
-        spannableString.setSpan(textStyle, selectionStart, selectionEnd, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+        spannableString.setSpan(textStyle, selectionStart, selectionEnd, Spannable.SPAN_EXCLUSIVE_INCLUSIVE)
         return spannableString
     }
 
@@ -28,7 +27,7 @@ class TextFormatter {
         val spanContainers = mutableListOf<SpanContainer>()
         val spanClasses = arrayOf(StyleSpan::class.java, UnderlineSpan::class.java, StrikethroughSpan::class.java)
         for (spanClass in spanClasses) {
-            val spanType = resolveTypeFromSimpleName(spanClass.simpleName)
+            val spanType = TextFormatterType.valueOf(spanClass.simpleName.uppercase())
             getSpecificSpans(
                 text = text,
                 spans = text.getSpans(0, text.length, spanClass),
@@ -70,13 +69,13 @@ class TextFormatter {
         }
     }
 
-    fun setSpansFromContainers(containers: List<SpanContainer>?, text: Spannable): SpannableStringBuilder {
+    fun setSpansFromContainers(containers: List<SpanContainer>?, text: String): SpannableStringBuilder {
         val spannableText = SpannableStringBuilder(text)
         containers?.let {
             for (container in containers) {
                 val textStyle = resolveTextStyle(type = container.spanType)
-                val spanEnd = if (container.start <= text.length) text.length else container.end
-                spannableText.setSpan(textStyle, container.start, spanEnd, Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
+                val spanEnd = if (container.end > text.length) text.length else container.end
+                spannableText.setSpan(textStyle, container.start, spanEnd, Spannable.SPAN_EXCLUSIVE_INCLUSIVE)
             }
         }
         return spannableText
@@ -92,13 +91,15 @@ class TextFormatter {
         }
     }
 
+    // TODO remove this is my solution works
     private fun resolveTypeFromSimpleName(simpleName: String): TextFormatterType {
-        return when(simpleName) {
-            StyleSpan::class.simpleName -> TextFormatterType.BOLD
-            UnderlineSpan::class.simpleName -> TextFormatterType.UNDERLINE
-            StrikethroughSpan::class.simpleName -> TextFormatterType.STRIKETHROUGH
-            else -> TextFormatterType.BOLD
-        }
+        return TextFormatterType.valueOf(simpleName.uppercase())
+//        return when(simpleName) {
+//            StyleSpan::class.simpleName?.uppercase() -> TextFormatterType.BOLD
+//            UnderlineSpan::class.simpleName -> TextFormatterType.UNDERLINE
+//            StrikethroughSpan::class.simpleName -> TextFormatterType.STRIKETHROUGH
+//            else -> TextFormatterType.BOLD
+//        }
     }
 }
 

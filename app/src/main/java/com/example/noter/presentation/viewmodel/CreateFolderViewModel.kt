@@ -23,23 +23,17 @@ class CreateFolderViewModel(
         _folderNamesList.value = folderNamesList
     }
 
-    private fun addFolderToFolderNamesList(folderName: String) {
-        _folderNamesList.value!!.add(folderName)
-    }
-
     fun checkAndSaveFolder(folderName: String): Boolean {
         return if (!_folderNamesList.value!!.contains(folderName)) {
-            addFolderToFolderNamesList(folderName = folderName)
+            _folderNamesList.value!!.add(folderName)
+
             val newFolder = NoteFolder(id = 0, title = folderName)
             _createdFolder.value = newFolder
-            saveFolder()
+
+            viewModelScope.launch(Dispatchers.IO) {
+                saveFolderUseCase.execute(noteFolder = _createdFolder.value!!)
+            }
             true
         } else false
-    }
-
-    private fun saveFolder() {
-        viewModelScope.launch(Dispatchers.IO) {
-            saveFolderUseCase.execute(noteFolder = _createdFolder.value!!)
-        }
     }
 }
