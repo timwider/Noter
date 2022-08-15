@@ -1,4 +1,4 @@
-package com.example.noter.presentation.viewmodel
+package com.example.noter.presentation.dialogs.create_folder
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

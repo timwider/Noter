@@ -1,20 +1,15 @@
-package com.example.noter.presentation.view
+package com.example.noter.presentation.dialogs.create_folder
 
-import android.app.Dialog
+import android.app.Service
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
-import androidx.fragment.app.DialogFragment
+import android.view.inputmethod.InputMethodManager
 import com.example.noter.R
 import com.example.noter.databinding.CreateFolderFragmentBinding
-import com.example.noter.presentation.viewmodel.CreateFolderViewModel
+import com.example.noter.presentation.dialogs.create_folder.CreateFolderViewModel
 import com.example.noter.utils.KeyboardAnimator
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.snackbar.Snackbar
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -29,6 +24,7 @@ class CreateFolderFragment: BottomSheetDialogFragment() {
     override fun onStart() {
         super.onStart()
         dialog?.window?.let { KeyboardAnimator(window = it).start() }
+        requireContext()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,23 +54,31 @@ class CreateFolderFragment: BottomSheetDialogFragment() {
 
         binding.btnCreateFolder.setOnClickListener {
             val folderName =  binding.etFolderName.text.toString()
-            onCreateFolder(folderName = folderName)
+            val isFolderCreated = createFolder(folderName = folderName)
+            if (isFolderCreated) {
+                val imm = activity?.getSystemService(Service.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(view.windowToken, 0)
+            }
             dialog?.dismiss()
         }
 
         binding.btnCancel.setOnClickListener {
+            val imm = activity?.getSystemService(Service.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
             dialog?.dismiss()
         }
         super.onViewCreated(view, savedInstanceState)
     }
 
-    private fun onCreateFolder(folderName: String) {
+    private fun createFolder(folderName: String): Boolean {
 
         if (folderName.isEmpty()) makeSnackbar(messageType = SnackbarMessageType.NO_NAME_PROVIDED)
 
         val isFolderSaved = createFolderViewModel.checkAndSaveFolder(folderName)
 
         if (!isFolderSaved) makeSnackbar(SnackbarMessageType.NAME_TAKEN)
+
+        return isFolderSaved
     }
 
     private fun makeSnackbar(messageType: SnackbarMessageType) {

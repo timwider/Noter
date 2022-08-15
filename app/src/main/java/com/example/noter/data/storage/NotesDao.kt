@@ -30,4 +30,7 @@ interface NotesDao {
     @Query("DELETE FROM notes WHERE id in (:ids)")
     fun deleteNotesById(ids: List<Int>)
 
+    @Query("DELETE FROM notes WHERE content=''")
+    fun clearEmptyNotes()
+
 }

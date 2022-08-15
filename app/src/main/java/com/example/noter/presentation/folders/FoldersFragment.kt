@@ -1,4 +1,4 @@
-package com.example.noter.presentation.view
+package com.example.noter.presentation.folders
 
 import android.os.Bundle
 import android.view.View
@@ -7,9 +7,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.noter.R
 import com.example.noter.adapters.FoldersAdapter
 import com.example.noter.databinding.FoldersFragmentBinding
-import com.example.noter.presentation.viewmodel.CreateFolderViewModel
-import com.example.noter.presentation.viewmodel.FolderViewModel
-import com.example.noter.presentation.viewmodel.HolderViewModel
+import com.example.noter.presentation.dialogs.create_folder.CreateFolderViewModel
+import com.example.noter.presentation.folder_notes.FolderNotesFragment
+import com.example.noter.presentation.holder.CREATE_FOLDER_FRAGMENT_TAG
+import com.example.noter.presentation.holder.HolderViewModel
+import com.example.noter.presentation.home.FOLDER_NAME_ARGS_KEY
+import com.example.noter.presentation.dialogs.create_folder.CreateFolderFragment
+import com.example.noter.presentation.dialogs.create_folder.FOLDER_LIST_ARGS
 import com.example.noter.utils.FabAction
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -75,7 +79,7 @@ class FoldersFragment: Fragment(R.layout.folders_fragment) {
     private fun onFolderClick(folderName: String) {
 
         val bundle = Bundle()
-        bundle.putString("args_note_folder_key", folderName)
+        bundle.putString(FOLDER_NAME_ARGS_KEY, folderName)
         val folderNotesFragment = FolderNotesFragment()
         folderNotesFragment.arguments = bundle
 

@@ -51,4 +51,8 @@
     <string name="iv_content_description_italic">Курсив</string>
     <string name="iv_content_description_strikethrough">Зачёркнутый</string>
     <string name="select_notes_to_delete">Выберите заметки для удаления.</string>
+    <string name="notification_channel_description">Эти уведомления связаны с напоминаниями, которые вы можете установить на заметки.</string>
+    <string name="share_note">Поделиться</string>
+    <string name="delete">Удалить</string>
+    <string name="notification">Напоминание</string>
 </resources>

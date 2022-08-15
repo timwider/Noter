@@ -1,4 +1,4 @@
-package com.example.noter.presentation.view
+package com.example.noter.presentation.holder
 
 import android.os.Bundle
 import android.view.View
@@ -9,8 +9,8 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.noter.R
 import com.example.noter.adapters.NotesTabsAdapter
 import com.example.noter.databinding.HolderFragmentBinding
-import com.example.noter.presentation.viewmodel.HolderViewModel
-import com.example.noter.presentation.viewmodel.HomeViewModel
+import com.example.noter.presentation.home.HomeViewModel
+import com.example.noter.utils.SelectionMode
 import com.example.noter.utils.ToolbarLayoutAnimator
 import com.google.android.material.tabs.TabLayoutMediator
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -26,17 +26,18 @@ class HolderFragment: Fragment(R.layout.holder_fragment) {
     private val homeViewModel: HomeViewModel by sharedViewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         binding = HolderFragmentBinding.bind(view)
         val adapter = NotesTabsAdapter(this)
         binding.viewPager2.adapter = adapter
         binding.fabAddNoteOrFolder.setOnClickListener { holderViewModel.setFabAction(binding.viewPager2.currentItem) }
         setupTabMediator(viewPager = binding.viewPager2)
 
+        binding.viewPager2.currentItem = holderViewModel.getCurrentItem()
+
         val toolbarLayoutAnimator = ToolbarLayoutAnimator(binding.selectionModeLayout, binding.tabLayout)
 
         homeViewModel.selectionMode.observe(viewLifecycleOwner) {
-            toolbarLayoutAnimator.onSelectionModeChanged(it)
+            if (it != SelectionMode.NOT_SET) toolbarLayoutAnimator.onSelectionModeChanged(it)
         }
 
         binding.selectionModeLayout.children.forEach { child ->
@@ -54,5 +55,14 @@ class HolderFragment: Fragment(R.layout.holder_fragment) {
             }
         }.attach()
 
+    }
+
+    /**
+     * This is done via viewModel because savedInstanceState doesn't work as expected
+     * (viewpager doesn't set  his page properly)
+     */
+    override fun onDestroyView() {
+        holderViewModel.saveCurrentItem(binding.viewPager2.currentItem)
+        super.onDestroyView()
     }
 }

@@ -1,7 +1,5 @@
-package com.example.noter.presentation.viewmodel
+package com.example.noter.presentation.note
 
-import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,6 +8,7 @@ import com.example.noter.domain.usecase.notes.DeleteNoteUseCase
 import com.example.noter.domain.usecase.notes.SaveNoteUseCase
 import com.example.noter.domain.usecase.notes.UpdateNoteUseCase
 import com.example.noter.utils.SpanContainer
+import com.example.noter.utils.emptyString
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -18,13 +17,21 @@ const val ID_NOT_SET = 0
 class NoteViewModel(
     private val saveNoteUseCase: SaveNoteUseCase,
     private val deleteNoteUseCase: DeleteNoteUseCase,
-    private val updateNoteUseCase: UpdateNoteUseCase,
+    private val updateNoteUseCase: UpdateNoteUseCase
 ): ViewModel() {
-    private val _clickedNote = MutableLiveData<Note>()
-    private val clickedNote: LiveData<Note> = _clickedNote
-    private val noteToUpdateLiveData = MutableLiveData<Note>()
-    private val folderName = MutableLiveData("")
+    private val clickedNote = MutableLiveData<Note>()
+    private val folderName = MutableLiveData(emptyString())
     private val noteState = MutableLiveData(NoteState.NOT_SET)
+    private var isNewNote = true
+    private var noteDateCreated = emptyString()
+
+    fun isNewNote() = isNewNote
+
+    fun setIsNewNote(value: Boolean) { isNewNote = value }
+
+    fun getNoteDateCreated() = noteDateCreated
+
+    fun setNoteDateCreated(value: String) { noteDateCreated = value }
 
     private fun updateExistingNote(content: String, spanContainers: List<SpanContainer>) {
         val noteToUpdate = Note(
@@ -37,12 +44,10 @@ class NoteViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             updateNoteUseCase.execute(noteToUpdate = noteToUpdate)
         }
-
-        noteToUpdateLiveData.value = noteToUpdate
         noteState.value = NoteState.UPDATED
     }
 
-    fun getNoteDateCreated() : String = clickedNote.value!!.dateCreated
+    fun getNote() = clickedNote.value!!
 
     private fun saveNewNote(content: String, dateCreated: String, spanContainers: List<SpanContainer>) {
         val newNote = Note(
@@ -57,25 +62,29 @@ class NoteViewModel(
         }
     }
 
+    // We don't actually delete it, we just update it with empty contents
     fun deleteOldNote() {
         viewModelScope.launch(Dispatchers.IO) {
-            deleteNoteUseCase.execute(note = _clickedNote.value!!)
+            deleteNoteUseCase.execute(note = clickedNote.value!!)
         }
     }
 
-    fun setNote(note: Note) { _clickedNote.value = note }
+    fun setNote(note: Note) {
+        clickedNote.value = note
+        noteDateCreated = note.dateCreated
+    }
 
-    fun resolveNoteOnStop(isNewNote: Boolean, content: String, dateCreated: String, spanContainers: List<SpanContainer>) {
+    fun resolveNoteOnStop(content: String, spanContainers: List<SpanContainer>) {
         when {
-            isNewNote && content.isNotEmpty() -> saveNewNote(content, dateCreated, spanContainers)
-            !isNewNote && content.isNotEmpty() -> updateExistingNote(content, spanContainers)
-            !isNewNote && content.isEmpty() -> deleteOldNote()
+            isNewNote && content.isNotBlank() -> saveNewNote(content, noteDateCreated, spanContainers)
+            !isNewNote && content.isNotBlank() -> updateExistingNote(content, spanContainers)
+            !isNewNote && content.isBlank() -> deleteOldNote()
         }
     }
 
     fun setFolderName(name: String) { folderName.value = name }
 
-    fun getNoteSpans(): List<SpanContainer>? = _clickedNote.value?.spanContainers
+    fun  getNoteSpans(): List<SpanContainer>? = clickedNote.value?.spanContainers
 }
 
 enum class NoteState{

@@ -1,4 +1,4 @@
-package com.example.noter.presentation.view
+package com.example.noter.presentation.home
 
 import android.graphics.drawable.AnimatedVectorDrawable
 import android.os.Bundle
@@ -6,13 +6,18 @@ import android.view.View
 import android.widget.ImageView
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.add
+import androidx.fragment.app.commit
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.room.Delete
 import com.example.noter.R
 import com.example.noter.adapters.NotesAdapter
 import com.example.noter.databinding.HomeFragmentBinding
-import com.example.noter.presentation.view.dialogs.DeleteBottomSheetDialog
-import com.example.noter.presentation.viewmodel.HolderViewModel
-import com.example.noter.presentation.viewmodel.HomeViewModel
+import com.example.noter.presentation.dialogs.delete.DeleteBottomSheetDialog
+import com.example.noter.presentation.holder.HolderViewModel
+import com.example.noter.presentation.note.CLICKED_NOTE_ARGS_KEY
+import com.example.noter.presentation.note.IS_NEW_NOTE_ARGS_KEY
+import com.example.noter.presentation.note.NoteFragment
 import com.example.noter.utils.*
 import com.google.android.material.snackbar.Snackbar
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -36,7 +41,7 @@ class HomeFragment: Fragment(R.layout.home_fragment) {
 
         val rvAdapter = NotesAdapter(
             noteClickListener = { noteRV, imageView -> onNoteClick(noteRV, imageView) },
-            noteLongClickListener = { noteRV -> homeViewModel.onFirstNoteSelected(noteRV) }
+            noteLongClickListener = { noteRV, position -> homeViewModel.onFirstNoteSelected(noteRV, position) }
         )
         val selectionHelper = SelectionHelper(adapter = rvAdapter)
         binding.rvNotes.adapter = rvAdapter
@@ -52,6 +57,8 @@ class HomeFragment: Fragment(R.layout.home_fragment) {
         }
         homeViewModel.getNotes(true, folderName)
 
+
+
         registerObservers(adapter = rvAdapter, selectionHelper = selectionHelper)
         super.onViewCreated(view, savedInstanceState)
     }
@@ -66,7 +73,7 @@ class HomeFragment: Fragment(R.layout.home_fragment) {
         }
 
         homeViewModel.selectionMode.observe(viewLifecycleOwner) { selectionMode ->
-            toggleSelectionMode(selectionMode, selectionHelper)
+            toggleSelectionMode(selectionMode, adapter)
         }
 
         holderViewModel.fabAction.observe(viewLifecycleOwner) { action ->
@@ -77,26 +84,43 @@ class HomeFragment: Fragment(R.layout.home_fragment) {
         }
     }
 
-    private fun onSelectionModeAction(action: SelectionModeAction, selectionHelper: SelectionHelper) {
+    private fun onSelectionModeAction(action: SelectionModeAction, adapter: NotesAdapter) {
         if (action == SelectionModeAction.DELETE) {
-            showDeleteDialog()
-        } else selectionHelper.onSelectionModeAction(action)
+
+        } else adapter.changeListSelection()
+
+        when (action) {
+            SelectionModeAction.DELETE -> {
+                if (homeViewModel.areNotesSelected()) {
+                    showDeleteDialog()
+                } else Snackbar.make(
+                    requireView(), getString(R.string.select_notes_to_delete), Snackbar.LENGTH_SHORT).show()
+            }
+            SelectionModeAction.CANCEL -> adapter.changeListSelection(NoteSelectionState.NO_SELECTION)
+            SelectionModeAction.SELECT_ALL -> adapter.changeListSelection(NoteSelectionState.SELECTED)
+        }
     }
 
-    private fun toggleSelectionMode(mode: SelectionMode, selectionHelper: SelectionHelper) {
+    private fun toggleSelectionMode(mode: SelectionMode, adapter: NotesAdapter) {
         when (mode) {
-            SelectionMode.ENABLED -> selectionHelper.enableSelection(homeViewModel.getFirstSelectedNoteId())
-            SelectionMode.DISABLED -> selectionHelper.changeListSelection(NoteSelectionState.NO_SELECTION)
+            SelectionMode.ENABLED -> adapter.enableSelection(homeViewModel.getFirstSelectedNoteId(), )
+            SelectionMode.DISABLED -> adapter.changeListSelection(NoteSelectionState.NO_SELECTION)
             else -> {}
         }
     }
 
     private fun showDeleteDialog() {
-        val dialog = DeleteBottomSheetDialog(::handleDeleteAction)
+        val dialog = DeleteBottomSheetDialog()
         val args = Bundle()
         args.putString(DELETE_DIALOG_TYPE_ARGS_KEY, DELETE_SELECTED_NOTES)
         dialog.arguments = args
         dialog.show(parentFragmentManager, null)
+
+        activity?.let {
+            it.supportFragmentManager.commit {
+
+            }
+        }
     }
 
     // This is called after positive button was clicked in a dialog
@@ -133,14 +157,15 @@ class HomeFragment: Fragment(R.layout.home_fragment) {
         if (!folderName.isNullOrEmpty()) args.putString(FOLDER_NAME_ARGS_KEY, folderName)
         args.putBoolean(IS_NEW_NOTE_ARGS_KEY, isNewNote)
         fragment.arguments = args
-        navigateToNote(fragment)
+        navigateToNote(args)
     }
 
-    private fun navigateToNote(noteFragment: NoteFragment) {
-        activity?.supportFragmentManager?.beginTransaction()
-            ?.replace(R.id.main_fragment_container, noteFragment, NOTE_FRAGMENT_TAG)
-            ?.addToBackStack(NOTE_FRAGMENT_TAG)
-            ?.commit()
+    private fun navigateToNote(args: Bundle?) {
+        activity?.supportFragmentManager?.commit {
+            setReorderingAllowed(true)
+            replace(R.id.main_fragment_container, NoteFragment::class.java, args)
+            addToBackStack(null)
+        }
     }
 
     private fun extractFolderName() : String {

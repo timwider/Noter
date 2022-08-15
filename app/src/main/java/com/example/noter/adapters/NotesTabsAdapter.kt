@@ -2,8 +2,8 @@ package com.example.noter.adapters
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.noter.presentation.view.FoldersFragment
-import com.example.noter.presentation.view.HomeFragment
+import com.example.noter.presentation.folders.FoldersFragment
+import com.example.noter.presentation.home.HomeFragment
 
 const val FRAGMENTS_COUNT = 2
 
@@ -23,7 +23,7 @@ class NotesTabsAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
         }
      }
 
-    fun getFragments(): Array<Fragment> {
+    private fun getFragments(): Array<Fragment> {
         val fragmentOne = HomeFragment()
         val fragmentTwo = FoldersFragment()
         return arrayOf(fragmentOne, fragmentTwo)

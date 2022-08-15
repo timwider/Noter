@@ -1,7 +1,6 @@
-package com.example.noter.presentation.viewmodel
+package com.example.noter.presentation.folder_notes
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.noter.domain.usecase.note_folders.DeleteFolderUseCase
 import com.example.noter.domain.usecase.notes.DeleteFolderNotesUseCase
 import kotlinx.coroutines.Dispatchers
@@ -12,15 +11,26 @@ class FolderNotesViewModel(
     private val deleteFolderNotesUseCase: DeleteFolderNotesUseCase
 ): ViewModel() {
 
+    private val folderName = MutableLiveData<String>()
+
+    fun setFolderName(name: String) {
+        folderName.value = name
+    }
+
+    fun getFolderName() = folderName.value
+
     fun deleteFolderNotes(folderName: String) {
         viewModelScope.launch(Dispatchers.IO) {
             deleteFolderNotesUseCase.execute(folderName)
         }
     }
 
-    fun deleteFolder(noteFolderTitle: String) {
+    /**
+     * It deletes current folder and the notes inside.
+     */
+    fun deleteFolder() {
         viewModelScope.launch(Dispatchers.IO) {
-            deleteFolderUseCase.execute(noteFolderTitle = noteFolderTitle)
+            deleteFolderUseCase.execute(noteFolderTitle = folderName.value!!)
         }
     }
 }

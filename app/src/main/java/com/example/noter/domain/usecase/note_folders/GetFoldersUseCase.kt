@@ -6,8 +6,5 @@ import com.example.noter.domain.model.NoteFolder
 class GetFoldersUseCase(
     private val repository: NoteFoldersRepository
 ) {
-
-    suspend fun execute(): List<NoteFolder> {
-        return repository.getFolders()
-    }
+    suspend fun execute(): List<NoteFolder> = repository.getFolders()
 }

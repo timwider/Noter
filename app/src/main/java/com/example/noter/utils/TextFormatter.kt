@@ -9,7 +9,7 @@ import android.text.style.StyleSpan
 import android.text.style.UnderlineSpan
 import com.example.noter.R
 
-class TextFormatter {
+class TextFormatter(private val spans: List<SpanContainer>?) {
 
     fun formatText(text: Spannable,
         type: TextFormatterType,
@@ -27,7 +27,14 @@ class TextFormatter {
         val spanContainers = mutableListOf<SpanContainer>()
         val spanClasses = arrayOf(StyleSpan::class.java, UnderlineSpan::class.java, StrikethroughSpan::class.java)
         for (spanClass in spanClasses) {
-            val spanType = TextFormatterType.valueOf(spanClass.simpleName.uppercase())
+
+            val spanType = when (spanClass.simpleName) {
+                StyleSpan::class.simpleName -> TextFormatterType.BOLD
+                UnderlineSpan::class.simpleName -> TextFormatterType.UNDERLINE
+                StrikethroughSpan::class.simpleName -> TextFormatterType.STRIKETHROUGH
+                else -> TextFormatterType.BOLD
+            }
+
             getSpecificSpans(
                 text = text,
                 spans = text.getSpans(0, text.length, spanClass),
@@ -38,6 +45,8 @@ class TextFormatter {
         }
         return spanContainers.toSet().toList()
     }
+
+    fun getSpans(): List<SpanContainer>? = spans
 
     private fun getSpecificSpans(
         text: Spannable,

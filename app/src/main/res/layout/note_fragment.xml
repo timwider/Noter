@@ -59,6 +59,7 @@
         android:background="@color/white"
         android:gravity="top|start"
         android:textSize="16sp"
+        android:imeOptions="flagNoExtractUi"
         app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

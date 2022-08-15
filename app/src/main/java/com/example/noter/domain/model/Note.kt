@@ -10,3 +10,9 @@ data class Note(
     var folderName: String,
     var spanContainers: List<SpanContainer>
 ): Serializable
+
+data class NewNote(
+    val id: Int
+): Serializable, BaseModel(id) {
+
+}

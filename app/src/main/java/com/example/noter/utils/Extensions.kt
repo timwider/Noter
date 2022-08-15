@@ -35,4 +35,11 @@ fun Note.extractName(): String {
         firstLine.substring(0, MAX_NOTE_LENGTH) + "..."
     } else firstLine
 }
+// I don't like how quotes look, so I use this instead
+fun emptyString() = ""
+
+fun <T>MutableList<T>.clearAndAdd(item: T) {
+    this.clear()
+    this.add(item)
+}
 

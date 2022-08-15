@@ -74,5 +74,8 @@ class NotesRepositoryImpl(
         )
     }
 
+    override suspend fun clearEmptyNotes() {
+        notesDao.clearEmptyNotes()
+    }
 
 }

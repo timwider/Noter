@@ -1,5 +1,9 @@
 package com.example.noter.utils
 
+import android.view.View
+import android.widget.ImageView
+import androidx.core.content.res.ResourcesCompat
+import com.example.noter.R
 import com.example.noter.adapters.NotesAdapter
 
 const val NOTE_NOT_FOUND_ID = -1
@@ -10,31 +14,16 @@ class SelectionHelper(
 
     fun onSelectionModeAction(action: SelectionModeAction) {
         when (action) {
-            SelectionModeAction.SELECT_ALL -> changeListSelection(NoteSelectionState.SELECTED)
-            SelectionModeAction.CANCEL -> changeListSelection(NoteSelectionState.NO_SELECTION)
+            SelectionModeAction.SELECT_ALL -> adapter.changeListSelection(NoteSelectionState.SELECTED)
+            SelectionModeAction.CANCEL -> adapter.changeListSelection(NoteSelectionState.NO_SELECTION)
+            else -> {}
         }
     }
 
-
-    fun changeListSelection(selectionState: NoteSelectionState) {
-        val notes = adapter.currentList
-        notes.forEach { it.selectionState = selectionState }
-        adapter.submitList(notes)
-        adapter.notifyDataSetChanged()
-    }
-
-    fun enableSelection(selectedNoteId: Int) {
-
+    fun enableSelection(selectedNoteId: Int, itemPosition: Int) {
         if (selectedNoteId != NOTE_NOT_FOUND_ID) {
-            val currentNotesList = adapter.currentList
-            for (note in currentNotesList) {
-                note.selectionState = if (note.id == selectedNoteId) {
-                    NoteSelectionState.SELECTED
-                } else NoteSelectionState.NOT_SELECTED
-            }
-            adapter.submitList(currentNotesList)
-            adapter.notifyDataSetChanged()
+            adapter.currentList[selectedNoteId].selectionState = NoteSelectionState.SELECTED
+            adapter.notifyItemChanged(itemPosition)
         }
     }
-
 }

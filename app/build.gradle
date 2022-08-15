@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.noter"
-        minSdk 21
+        minSdk 23
         targetSdk 32
         versionCode 1
         versionName "1.0"
@@ -83,4 +83,7 @@ dependencies {
 
     // Koin
     implementation "io.insert-koin:koin-android:$koin_version"
+
+    // Retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
 }

@@ -1,4 +1,4 @@
-package com.example.noter.presentation.viewmodel
+package com.example.noter.presentation.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -6,10 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.noter.R
 import com.example.noter.domain.model.Note
-import com.example.noter.domain.usecase.notes.DeleteFolderNotesUseCase
-import com.example.noter.domain.usecase.notes.DeleteNotesByIdUseCase
-import com.example.noter.domain.usecase.notes.GetFolderNotesUseCase
-import com.example.noter.domain.usecase.notes.GetNotesNoFolderUseCase
+import com.example.noter.domain.usecase.notes.*
 import com.example.noter.utils.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,6 +15,7 @@ class HomeViewModel(
     private val getNotesNoFolderUseCase: GetNotesNoFolderUseCase,
     private val deleteNotesByIdUseCase: DeleteNotesByIdUseCase,
     private val getFolderNotesUseCase: GetFolderNotesUseCase,
+    private val deleteEmptyNotesUseCase: DeleteEmptyNotesUseCase
 ): ViewModel() {
 
     private val _notes: MutableLiveData<List<Note>> = MutableLiveData()
@@ -30,6 +28,8 @@ class HomeViewModel(
 
     private val _selectionModeAction = MutableLiveData(SelectionModeAction.NOT_SET)
     val selectionModeAction = _selectionModeAction as LiveData<SelectionModeAction>
+
+    fun isSelectionModeEnabled() = selectionMode.value == SelectionMode.ENABLED
 
     fun resolveSelectionModeAction(actionId: Int) {
         when (actionId) {
@@ -48,13 +48,11 @@ class HomeViewModel(
     fun disableSelectionMode() { _selectionMode.value = SelectionMode.DISABLED }
 
     private fun deleteNotesByIds(ids: List<Int>) {
-        viewModelScope.launch(Dispatchers.IO) {
-            deleteNotesByIdUseCase.execute(ids)
-        }
+        viewModelScope.launch(Dispatchers.IO) { deleteNotesByIdUseCase.execute(ids) }
     }
 
-    private fun deleteFolderNotes() {
-
+    private fun deleteEmptyNotes() {
+        viewModelScope.launch(Dispatchers.IO) {  deleteEmptyNotesUseCase.execute() }
     }
 
     private fun resetSelectionModeAction() {
@@ -63,6 +61,8 @@ class HomeViewModel(
 
     // I don't like that setValue is triggered 2 times todo change it
     fun getNotes(rewriteValue: Boolean, folderName: String?) {
+
+        deleteEmptyNotes()
 
         if (rewriteValue) _notes.value = emptyList<Note>().toMutableList()
 
@@ -77,10 +77,9 @@ class HomeViewModel(
         }
     }
 
-    fun onFirstNoteSelected(note: NoteRV) {
+    fun onFirstNoteSelected(note: NoteRV, position: Int) {
         if (note.selectionState == NoteSelectionState.NO_SELECTION) note.selectionState = NoteSelectionState.SELECTED
-        selectedNotesIds.value?.clear()
-        addSelectedNoteId(noteId = note.id)
+        selectedNotesIds.value?.clearAndAdd(position)
         _selectionMode.value = SelectionMode.ENABLED
     }
 
@@ -98,6 +97,10 @@ class HomeViewModel(
         return if (selectedNotesIds.value.isNullOrEmpty()) {
             NOTE_NOT_FOUND_ID
         } else selectedNotesIds.value?.get(0) ?: NOTE_NOT_FOUND_ID
+    }
+
+    fun areNotesSelected(): Boolean {
+        return selectedNotesIds.value?.isNotEmpty() ?: false
     }
 
     fun addSelectedNoteId(noteId: Int) = selectedNotesIds.addAndNotify(noteId)

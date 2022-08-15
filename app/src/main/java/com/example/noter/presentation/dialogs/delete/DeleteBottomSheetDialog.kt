@@ -1,19 +1,19 @@
-package com.example.noter.presentation.view.dialogs
+package com.example.noter.presentation.dialogs.delete
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
 import com.example.noter.R
 import com.example.noter.databinding.DeleteBottomsheetDialogBinding
+import com.example.noter.presentation.folder_notes.DELETE_REQUEST_KEY
+import com.example.noter.presentation.folder_notes.SHOULD_DELETE_FOLDER
 import com.example.noter.utils.*
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kotlin.reflect.KFunction
-import kotlin.reflect.KFunction0
 
-class DeleteBottomSheetDialog(
-    private val onPositiveButtonClicked: KFunction0<Unit>
-): BottomSheetDialogFragment() {
+class DeleteBottomSheetDialog: BottomSheetDialogFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,10 +30,12 @@ class DeleteBottomSheetDialog(
             else -> R.string.delete_note_title
         }
         binding.tvDeleteTitle.setText(tvDeleteResId)
-        binding.btnDelete.setOnClickListener { onPositiveButtonClicked(); dialog?.dismiss() }
+        binding.btnDelete.setOnClickListener {
+            setFragmentResult(DELETE_REQUEST_KEY, bundleOf(SHOULD_DELETE_FOLDER to true))
+            dialog?.dismiss()
+        }
         binding.btnCancel.setOnClickListener { dialog?.dismiss() }
 
         super.onViewCreated(view, savedInstanceState)
     }
-
 }

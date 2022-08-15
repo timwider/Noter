@@ -11,13 +11,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.noter.R
-import com.example.noter.utils.NoteRV
-import com.example.noter.utils.NoteSelectionState
-import com.example.noter.utils.extractName
+import com.example.noter.utils.*
 
 class NotesAdapter(
     private val noteClickListener: (NoteRV, ImageView) -> Unit,
-    private val noteLongClickListener: (NoteRV) -> Unit
+    private val noteLongClickListener: (NoteRV, Int) -> Unit,
+    private val selectionHelper: SelectionHelper
 
 ): ListAdapter<NoteRV, NotesAdapter.ViewHolder>(NotesCallback()) {
 
@@ -38,36 +37,32 @@ class NotesAdapter(
         holder.tvName.text = noteItem.extractName()
         holder.tvDateCreated.text = noteItem.dateCreated
 
-//        val ivSelectionDrawable = (holder.ivSelection.drawable as AnimatedVectorDrawable)
-
-        when (noteItem.selectionState) {
-            NoteSelectionState.SELECTED -> {
-                holder.ivSelection.setImageDrawable(
-                    ResourcesCompat.getDrawable(
-                        holder.ivSelection.context.resources,
-                        R.drawable.selected_vector,
-                        null
-                    )
-                )
-                holder.ivSelection.visibility = View.VISIBLE
-            }
-            NoteSelectionState.NOT_SELECTED -> {
-                holder.ivSelection.visibility = View.VISIBLE
-                    holder.ivSelection.setImageDrawable(
-                        ResourcesCompat.getDrawable(
-                            holder.noteCard.context.resources,
-                            R.drawable.unselected_vector,
-                            null
-                        )
-                    )
-                }
-            NoteSelectionState.NO_SELECTION -> {
-                holder.ivSelection.visibility = View.GONE
-            }
+        val drawableId = when (noteItem.selectionState) {
+            NoteSelectionState.SELECTED -> R.drawable.selected_vector
+            NoteSelectionState.NOT_SELECTED -> R.drawable.unselected_vector
+            NoteSelectionState.NO_SELECTION -> null
+        }
+        drawableId?.let {
+            holder.ivSelection.setImageResource(it)
+            holder.ivSelection.visibility = View.VISIBLE
         }
 
-        holder.noteCard.setOnClickListener{ noteClickListener(noteItem, holder.ivSelection) }
-        holder.noteCard.setOnLongClickListener { noteLongClickListener(noteItem); true }
+        holder.noteCard.setOnClickListener { noteClickListener(noteItem, holder.ivSelection) }
+        holder.noteCard.setOnLongClickListener { noteLongClickListener(noteItem, position); true }
+    }
+
+    fun changeListSelection(selectionState: NoteSelectionState) {
+        val notes = currentList
+        notes.forEach { it.selectionState = selectionState }
+        submitList(notes)
+        notifyItemRangeChanged(0, itemCount)
+    }
+
+    fun enableSelection(selectedNoteId: Int, selectedNotePosition: Int) {
+        if (selectedNoteId != NOTE_NOT_FOUND_ID) {
+            getItem(selectedNotePosition).selectionState = NoteSelectionState.SELECTED
+            notifyItemChanged(selectedNotePosition)
+        }
     }
 
 

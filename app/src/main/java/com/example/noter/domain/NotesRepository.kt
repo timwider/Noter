@@ -1,10 +1,10 @@
 package com.example.noter.domain
 
+import com.example.noter.domain.model.BaseModel
 import com.example.noter.domain.model.Note
 import com.example.noter.utils.SpanContainer
 
 interface NotesRepository {
-
     suspend fun getNotes(): List<Note>
 
     suspend fun getNotesNoFolder() : List<Note>
@@ -20,4 +20,6 @@ interface NotesRepository {
     suspend fun deleteFolderNotes(folderName: String)
 
     suspend fun deleteNotesById(ids: List<Int>)
+
+    suspend fun clearEmptyNotes()
 }

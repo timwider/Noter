@@ -38,12 +38,15 @@
         <entry key="..\:/Users/timwi/StudioProjects/Noter/app/src/main/res/drawable/unselected_vector.xml" value="0.1045" />
         <entry key="..\:/Users/timwi/StudioProjects/Noter/app/src/main/res/layout/activity_main.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/timwi/StudioProjects/Noter/app/src/main/res/layout/create_folder_fragment.xml" value="0.25" />
+        <entry key="..\:/Users/timwi/StudioProjects/Noter/app/src/main/res/layout/create_notification_fragment.xml" value="0.25" />
         <entry key="..\:/Users/timwi/StudioProjects/Noter/app/src/main/res/layout/delete_bottomsheet_dialog.xml" value="0.25" />
         <entry key="..\:/Users/timwi/StudioProjects/Noter/app/src/main/res/layout/folder_notes_fragment.xml" value="0.17314814814814813" />
         <entry key="..\:/Users/timwi/StudioProjects/Noter/app/src/main/res/layout/holder_fragment.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/timwi/StudioProjects/Noter/app/src/main/res/layout/home_fragment.xml" value="0.25" />
+        <entry key="..\:/Users/timwi/StudioProjects/Noter/app/src/main/res/layout/killer.xml" value="0.17777777777777778" />
         <entry key="..\:/Users/timwi/StudioProjects/Noter/app/src/main/res/layout/note_fragment.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/timwi/StudioProjects/Noter/app/src/main/res/layout/note_rv_item.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/timwi/StudioProjects/Noter/app/src/main/res/menu/menu.xml" value="0.20416666666666666" />
         <entry key="app/src/main/res/drawable/ic_note_not_selected.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_note_selected.xml" value="0.177" />
         <entry key="app/src/main/res/drawable/layer_checkbox_selection.xml" value="0.1" />

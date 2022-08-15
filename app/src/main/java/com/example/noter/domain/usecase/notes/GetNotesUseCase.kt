@@ -7,7 +7,15 @@ class GetNotesUseCase(
     private val repository: NotesRepository
 ) {
 
-    suspend fun execute(): List<Note> {
+    suspend fun getAllNotes(): List<Note> {
         return repository.getNotes()
+    }
+
+    suspend fun getNotesNoFolder(): List<Note> {
+        return repository.getNotesNoFolder()
+    }
+
+    suspend fun getFolderNotes(folderName: String): List<Note> {
+        return repository.getFolderNotes(folderName)
     }
 }
